@@ -105,6 +105,7 @@ options:
   vm_hardware:
     description:
       - A key, value list of VM config settings. Must include ['memory_mb', 'num_cpus', 'osid', 'scsi'].
+      - Support optional 'firmware' with 'bios' or 'efi' value.
     required: false
     default: null
   vm_nic:
@@ -1345,6 +1346,7 @@ def create_vm(vsphere_client, module, esxi, resource_pool, cluster_name, guest, 
     config.set_element_memoryMB(int(vm_hardware['memory_mb']))
     config.set_element_numCPUs(int(vm_hardware['num_cpus']))
     config.set_element_guestId(vm_hardware['osid'])
+    config.set_element_firmware(vm_hardware['firmware'] if 'firmware' in vm_hardware else 'bios')
     devices = []
 
     # Attach all the hardware we want to the VM spec.
